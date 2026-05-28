@@ -3,89 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI - Advanced Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Saaf Parakh AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #040814; --neon: #00f2fe; }
         body { background: var(--bg); color: white; font-family: 'Outfit', sans-serif; padding: 20px; }
         .container { max-width: 500px; margin: auto; }
-        /* वॉलेट बार */
-        .wallet-bar { background: rgba(0, 242, 254, 0.1); padding: 10px; border-radius: 12px; text-align: center; margin-bottom: 20px; border: 1px solid var(--neon); color: var(--neon); font-weight: 700; }
-        /* स्कैनर बॉक्स */
-        .scanner-box { border: 2px dashed var(--neon); padding: 30px; border-radius: 20px; text-align: center; margin: 15px 0; cursor: pointer; }
-        /* मैप बटन */
-        .map-box { background: rgba(255, 23, 68, 0.1); border: 1px solid #ff1744; padding: 15px; border-radius: 16px; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
-        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
-        .btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .header-section { background: rgba(0, 242, 254, 0.1); padding: 15px; border-radius: 15px; border: 1px solid var(--neon); margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; }
+        .map-btn { width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid #4facfe; padding: 15px; border-radius: 15px; color: white; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .action-row { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 15px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="wallet-bar" id="wallet">💰 Wallet: 0 Coins</div>
+    <div style="text-align: right; margin-bottom: 10px; color: var(--neon);">💰 Coins: <span id="coinCount">0</span></div>
 
-    <select id="langSelector" onchange="switchLanguage()" style="background:transparent; color:white; border:1px solid white; padding:5px; border-radius:8px;">
-        <option value="en">English</option>
-        <option value="hi">हिंदी</option>
-    </select>
+    <div class="header-section">
+        "Hey! I am Saaf Parakh AI. Show me the ingredients or lab-report. Let's filter out hidden chemicals!"
+    </div>
+
+    <h3>WHAT CAN YOU CHECK?</h3>
+    <div class="grid">
+        <div class="card">🍕<br>Packaged Food</div>
+        <div class="card">🥛<br>Dairy & Milk</div>
+        <div class="card">💊<br>Supplements</div>
+        <div class="card">🍎<br>Fresh Items</div>
+    </div>
 
     <h1>Saaf Parakh AI</h1>
 
-    <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
-        <img id="imagePreview" style="max-width:100%; display:none; border-radius:10px;">
-        <div id="uploadPrompt">📸 <span id="textUpload">Take a photo or choose a file</span></div>
-    </div>
-    <input type="file" id="fileInput" accept="image/*" onchange="loadPreview(event)" style="display:none;">
-
-    <div class="map-box" onclick="alert('Opening Map...')">
-        <span>📍</span>
-        <div>
-            <h4 id="textMap">Live Danger Map</h4>
-            <p style="font-size: 12px; opacity: 0.7;">Check nearby contaminated products</p>
-        </div>
+    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 10px;">
+        📸 Take a photo or choose a file<br>
+        <input type="file" id="fileInput" onchange="addCoins()">
     </div>
 
-    <div class="btn-row">
-        <button class="btn" style="background: var(--neon); color: black;" onclick="runAnalysis()">🚀 <span id="textAnalyze">Analyze Purity</span></button>
-        <button class="btn" style="background: #ff1744; color: white;">⚠️ <span id="textReport">Danger Report</span></button>
+    <button class="map-btn">📍 <div><strong>Live Danger Map</strong><br>Check near contaminate products</div></button>
+
+    <div class="action-row">
+        <button class="btn" style="background: var(--neon);" onclick="addCoins()">🚀 Analyze Purity</button>
+        <button class="btn" style="background: #ff1744; color: white;">⚠️ Danger Report</button>
     </div>
 </div>
 
 <script>
-    const supabase = supabasejs.createClient('https://ohhwmjfgfvmcuisdqnrh.supabase.co', 'YOUR_SUPABASE_KEY');
     let coins = 0;
-
-    function loadPreview(event) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = document.getElementById('imagePreview');
-            img.src = e.target.result;
-            img.style.display = 'block';
-            document.getElementById('uploadPrompt').style.display = 'none';
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-
-    async function runAnalysis() {
+    function addCoins() {
         coins += 10;
-        document.getElementById('wallet').innerText = `💰 Wallet: ${coins} Coins`;
-        alert("Analysis Complete! 10 Coins added.");
-    }
-
-    function switchLanguage() {
-        const lang = document.getElementById('langSelector').value;
-        if(lang === 'hi') {
-            document.getElementById('textUpload').innerText = "फोटो लें या फाइल चुनें";
-            document.getElementById('textMap').innerText = "डेंजर मैप";
-            document.getElementById('textAnalyze').innerText = "शुद्धता की जाँच करें";
-            document.getElementById('textReport').innerText = "रिपोर्ट करें";
-        } else {
-            document.getElementById('textUpload').innerText = "Take a photo or choose a file";
-            document.getElementById('textMap').innerText = "Live Danger Map";
-            document.getElementById('textAnalyze').innerText = "Analyze Purity";
-            document.getElementById('textReport').innerText = "Danger Report";
-        }
+        document.getElementById('coinCount').innerText = coins;
     }
 </script>
 </body>
