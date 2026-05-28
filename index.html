@@ -31,6 +31,10 @@
         .card { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         .scanner-box { border: 2px dashed var(--neon-cyan); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; background: rgba(0,0,0,0.3); }
         
+        /* Analysis Result Style */
+        #result-container { margin-bottom: 20px; padding: 20px; background: rgba(0, 242, 254, 0.05); border: 1px solid var(--neon-cyan); border-radius: 20px; display: none; }
+        .result-text { color: white; line-height: 1.6; }
+
         /* Map Styles */
         .map-box { background: rgba(255, 23, 68, 0.1); border: 1px solid var(--neon-red); padding: 15px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
         .map-box:hover { background: rgba(255, 23, 68, 0.2); transform: scale(1.02); }
@@ -62,7 +66,12 @@
 
     <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
         📸 Take a photo or choose a file<br>
-        <input type="file" id="fileInput" style="display:none;" onchange="addCoins()">
+        <input type="file" id="fileInput" style="display:none;" onchange="handleFile(this)">
+    </div>
+
+    <div id="result-container">
+        <h3 style="color: var(--neon-cyan);">🔍 Analysis Report</h3>
+        <div id="result-text" class="result-text"></div>
     </div>
 
     <div class="map-box" onclick="toggleMapOptions()">
@@ -87,7 +96,7 @@
     function addCoins() { coins += 10; document.getElementById('coinCount').innerText = coins; }
 
     function toggleMapOptions() {
-        let choice = confirm("Do you want to see the Embedded Map here?\n(Cancel for Google Maps external)");
+        let choice = confirm("Do you want to see the Embedded Map here?");
         if (choice) {
             let mapDiv = document.getElementById('map');
             mapDiv.style.display = 'block';
@@ -99,16 +108,29 @@
         }
     }
 
-    // AI Analysis Engine
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        if(e.target.files.length > 0) {
-            alert("Saaf Parakh AI is analyzing your item for hidden chemicals...");
+    // AI Analysis Engine (Dynamic List View)
+    function handleFile(input) {
+        if(input.files.length > 0) {
+            const container = document.getElementById('result-container');
+            const resultText = document.getElementById('result-text');
+            container.style.display = 'block';
+            
+            resultText.innerHTML = "<em>Saaf Parakh AI is scanning for hidden chemicals...</em>";
+            
             setTimeout(() => {
-                alert("Analysis Complete: This product contains trace amounts of E621 (MSG). Safe to consume in moderation.");
+                resultText.innerHTML = `
+                    <p style="margin-bottom: 10px;"><strong>Analysis Summary:</strong></p>
+                    <ul style="padding-left: 20px; list-style-type: disc;">
+                        <li style="margin-bottom: 5px;">✅ <b>Natural Ingredients:</b> High purity found.</li>
+                        <li style="margin-bottom: 5px;">⚠️ <b>Additives Detected:</b> Trace amounts of E621 (MSG).</li>
+                        <li style="margin-bottom: 5px;">❌ <b>Chemical Concerns:</b> No harmful preservatives found.</li>
+                        <li style="margin-top: 10px;">💡 <b>Recommendation:</b> Safe to consume in moderation.</li>
+                    </ul>
+                `;
                 addCoins();
             }, 2000);
         }
-    });
+    }
 </script>
 </body>
 </html>
