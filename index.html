@@ -83,8 +83,8 @@
             container.style.display = 'block';
             resultText.innerHTML = "<em>Analyzing with AI...</em>";
             
-            // API KEY यहाँ जोड़ें (लाइन 93)
-            const MY_API_KEY = "AIzaSyBInqBCCFqeBdseGVpstzw2Z32nlZRDd_g"; 
+            
+            const MY_API_KEY = AIzaSyBInqBCCFqeBdseGVpstzw2Z32nlZRDd_g
             
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MY_API_KEY}`, {
