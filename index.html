@@ -3,47 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI - Final Unified Dashboard</title>
+    <title>Saaf Parakh AI - Premium Lab Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-dark: #040814; --neon-cyan: #00f2fe; --neon-red: #ff1744; --text-light: #f8fafc; }
-        body { background: var(--bg-dark); color: var(--text-light); font-family: 'Outfit', sans-serif; padding: 20px; }
-        .wrapper { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .main-panel { background: rgba(11, 19, 43, 0.9); padding: 40px; border-radius: 32px; border: 1px solid rgba(0, 242, 254, 0.2); }
-        .btn-action { width: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); padding: 16px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .map-box { background: #0b132b; padding: 20px; border-radius: 20px; border: 1px solid var(--neon-red); margin-top: 20px; }
-        .preview-img { width: 100%; max-height: 260px; object-fit: contain; border-radius: 16px; display: none; }
-        @media (max-width: 950px) { .wrapper { grid-template-columns: 1fr; } }
+        /* यहाँ आपका ओरिजिनल CSS कोड है */
+        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.75); --neon-cyan: #00f2fe; --text-light: #f8fafc; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-dark); color: var(--text-light); font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif; padding: 40px 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .wrapper { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; }
+        .main-panel { background: var(--panel-bg); padding: 40px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(25px); }
+        .scanner-box { border: 2px dashed var(--neon-cyan); padding: 55px 20px; text-align: center; cursor: pointer; border-radius: 24px; margin-bottom: 25px; }
+        .btn-action { width: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); padding: 16px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; color: #040814; }
+        .map-section { margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .map-box { background: rgba(255, 23, 68, 0.05); border: 1px solid rgba(255, 23, 68, 0.2); padding: 20px; border-radius: 16px; text-align: center; }
+        #fileInput { display: none; }
+        .preview-img { width: 100%; max-height: 200px; object-fit: contain; margin-bottom: 10px; display: none; }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
     <div class="left-side">
-        <h1 id="t1">Saaf Parakh AI</h1>
-        <div id="aiBubble" class="ai-bubble">"Hey! Scan your food pack to detect hidden chemicals."</div>
-        </div>
+        <div class="ai-bubble" id="aiBubble">"Hey! I am Saaf Parakh AI. Scan your food pack."</div>
+    </div>
 
     <div class="main-panel">
-        <select id="langSelector" class="lang-select" onchange="switchLanguage()">
+        <select id="langSelector" onchange="switchLanguage()">
             <option value="en">English</option>
             <option value="hi">हिंदी</option>
         </select>
 
         <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
             <img id="imagePreview" class="preview-img">
-            <div id="uploadPrompt">📸 <span id="boxM">Upload Photo</span></div>
+            <div id="uploadPrompt">📸 <span id="boxM">Take a photo or choose a file</span></div>
         </div>
         <input type="file" id="fileInput" accept="image/*" onchange="loadPreview(event)">
 
         <button class="btn-action" onclick="runAnalysis()">🚀 <span id="btnTxt">Analyze Purity</span></button>
 
-        <div class="map-box">
-            <h3 id="mapTitle" style="color: var(--neon-red);">📍 Live Danger Map</h3>
-            <p id="mapDesc">Users reporting contaminated products nearby.</p>
-            <div id="mapContainer" style="height: 150px; background: #040814; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                Map View Loaded
+        <div class="map-section">
+            <h3 id="mapTitle" style="color: #ff1744; margin-bottom: 10px;">📍 Live Danger Map</h3>
+            <div class="map-box">
+                <p id="mapDesc">Live monitoring of adulterated products in your area.</p>
+                <div id="mapPlaceholder" style="margin-top:10px; height: 100px; background: rgba(0,0,0,0.3); border-radius: 8px; display: flex; align-items:center; justify-content:center;">
+                    [Interactive Map Loading...]
+                </div>
             </div>
         </div>
     </div>
@@ -51,15 +56,15 @@
 
 <script>
     const supabase = supabasejs.createClient('https://ohhwmjfgfvmcuisdqnrh.supabase.co', 'AIzaSyChFWz5S3tPru_zGBWDvDQLcVYskd_wcdU');
-
+    
     const loc = {
-        en: { t1: "Saaf Parakh AI", boxM: "Upload Photo", btn: "Analyze Purity", mapTitle: "Live Danger Map", mapDesc: "Users reporting contaminated products nearby." },
-        hi: { t1: "साफ़ परख एआई", boxM: "फोटो अपलोड करें", btn: "शुद्धता की जांच करें", mapTitle: "डेंजर मैप", mapDesc: "आस-पास के मिलावटी उत्पादों की रिपोर्ट।" }
+        en: { bubble: "Hey! Scan your food pack.", boxM: "Take a photo or choose a file", btn: "Analyze Purity", mapTitle: "Live Danger Map", mapDesc: "Live monitoring of adulterated products." },
+        hi: { bubble: "नमस्ते! अपने खाद्य पैकेट को स्कैन करें।", boxM: "फोटो लें या फाइल चुनें", btn: "शुद्धता की जांच करें", mapTitle: "डेंजर मैप", mapDesc: "आस-पास के मिलावटी उत्पादों की लाइव मॉनिटरिंग।" }
     };
 
     function switchLanguage() {
         const l = document.getElementById('langSelector').value;
-        document.getElementById('t1').innerText = loc[l].t1;
+        document.getElementById('aiBubble').innerText = loc[l].bubble;
         document.getElementById('boxM').innerText = loc[l].boxM;
         document.getElementById('btnTxt').innerText = loc[l].btn;
         document.getElementById('mapTitle').innerText = loc[l].mapTitle;
@@ -67,23 +72,21 @@
     }
 
     function loadPreview(event) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = document.getElementById('imagePreview');
-            img.src = e.target.result;
-            img.style.display = 'block';
-            document.getElementById('uploadPrompt').style.display = 'none';
-        };
-        reader.readAsDataURL(event.target.files[0]);
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('uploadPrompt').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
     }
 
     async function runAnalysis() {
-        const file = document.getElementById('fileInput').files[0];
-        if(!file) return alert("Upload a photo first!");
-        
-        // Supabase Report
-        const { error } = await supabase.from('reports').insert([{ product_name: "Scanned Item", danger_level: 'High' }]);
-        error ? alert("Database Error!") : alert("Reported to Danger Map!");
+        const { error } = await supabase.from('reports').insert([{ product_name: "Test", danger_level: 'High' }]);
+        alert(error ? "Error!" : "Reported to Danger Map!");
     }
 </script>
 </body>
