@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI - Premium Lab Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <title>Saaf Parakh AI - Premium Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.75); --neon-cyan: #00f2fe; --neon-red: #ff1744; --text-light: #f8fafc; }
+        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.85); --neon-cyan: #00f2fe; --neon-red: #ff1744; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-dark); color: var(--text-light); font-family: 'Outfit', sans-serif; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        
+        body { 
+            /* फूड सिक्योरिटी बैकग्राउंड */
+            background: linear-gradient(rgba(4, 8, 20, 0.9), rgba(4, 8, 20, 0.9)), 
+                        url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white; 
+            font-family: 'Outfit', sans-serif; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh; 
+        }
+        
         .container { width: 100%; max-width: 500px; }
         
-        /* Premium Header & Wallet */
         .wallet-badge { background: linear-gradient(90deg, #ffd700, #ff8c00); padding: 8px 16px; border-radius: 20px; color: black; font-weight: 800; display: inline-block; margin-bottom: 15px; }
         .header-section { background: rgba(0, 242, 254, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--neon-cyan); margin-bottom: 20px; line-height: 1.5; }
         
-        /* Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        .card { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         
-        /* Scanner & Map */
-        .scanner-box { border: 2px dashed var(--neon-cyan); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; }
+        .scanner-box { border: 2px dashed var(--neon-cyan); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; background: rgba(0,0,0,0.3); }
         .map-box { background: rgba(255, 23, 68, 0.1); border: 1px solid var(--neon-red); padding: 15px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
         
-        /* Action Buttons */
         .btn-row { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 15px; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; }
+        .btn { flex: 1; padding: 15px; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="wallet-badge">💰 Super Coins: <span id="coinCount">20</span></div>
+    <div class="wallet-badge">💰 Super Coins: <span id="coinCount">0</span></div>
     
     <div class="header-section">
         "Hey! I am Saaf Parakh AI. Don't just eat blindly—show me the ingredients, barcode, or the lab-report of your food pack. Let's filter out hidden chemicals together!"
@@ -67,7 +79,7 @@
 </div>
 
 <script>
-    let coins = 20;
+    let coins = 0;
     function addCoins() {
         coins += 10;
         document.getElementById('coinCount').innerText = coins;
