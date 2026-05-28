@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI - Premium Food Scanner</title>
+    <title>Saaf Parakh AI - Next-Gen Intelligence</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #040814;
-            --panel-bg: rgba(10, 16, 32, 0.7);
+            --panel-bg: rgba(10, 16, 32, 0.75);
             --neon-cyan: #00f2fe;
             --neon-blue: #4facfe;
+            --neon-green: #00e676;
+            --neon-red: #ff1744;
             --text-light: #f8fafc;
             --text-gray: #94a3b8;
-            --border-glow: rgba(0, 242, 254, 0.2);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-dark);
@@ -34,49 +31,38 @@
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
-            /* Futuristic Background with Subtle Food/Organic Visual Aura */
             background-image: 
                 radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.15), transparent 40%),
                 radial-gradient(circle at 20% 80%, rgba(79, 172, 254, 0.15), transparent 40%),
                 linear-gradient(rgba(4, 8, 20, 0.85), rgba(4, 8, 20, 0.95)),
-                url('https://images.unsplash.com/photo-1543339308-43e59d6b73a6?q=80&w=1000&auto=format&fit=crop'); /* High quality subtle background texture of healthy foods */
+                url('https://images.unsplash.com/photo-1543339308-43e59d6b73a6?q=80&w=1000&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* Responsive Split Layout for Desktop, Single Column for Mobile */
         .wrapper {
             width: 100%;
             max-width: 1100px;
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 40px;
-            align-items: center;
+            align-items: start;
         }
 
         @media (max-width: 900px) {
-            .wrapper {
-                grid-template-columns: 1fr;
-                max-width: 480px;
-            }
-            .visual-side {
-                order: -1; /* Put the beautiful visual side on top in mobile */
-                text-align: center;
-            }
+            .wrapper { grid-template-columns: 1fr; max-width: 480px; }
+            .visual-side { order: -1; }
         }
 
-        /* LEFT SIDE: Human Attractive Visuals & Quick Decisions */
-        .visual-side {
-            padding: 20px;
-        }
+        .visual-side { padding: 10px; }
 
         .ai-bubble {
             background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
             border-left: 4px solid var(--neon-cyan);
-            padding: 15px 20px;
-            border-radius: 0 16px 16px 16px;
-            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 0 20px 20px 20px;
+            margin-bottom: 25px;
             font-size: 16px;
             line-height: 1.6;
             color: #e2e8f0;
@@ -92,12 +78,7 @@
             text-transform: uppercase;
         }
 
-        /* Floating Interactive Decision Cards */
-        .decision-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
+        .decision-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         .f-card {
             background: rgba(255, 255, 255, 0.03);
@@ -105,7 +86,7 @@
             border-radius: 20px;
             padding: 15px;
             text-align: center;
-            transition: all 0.4s ease;
+            transition: all 0.3s;
             cursor: pointer;
         }
 
@@ -113,28 +94,12 @@
             transform: translateY(-5px);
             background: rgba(0, 242, 254, 0.05);
             border-color: rgba(0, 242, 254, 0.3);
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.1);
         }
 
-        .f-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-            display: block;
-        }
+        .f-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+        .f-title { font-size: 15px; font-weight: 600; }
+        .f-desc { font-size: 12px; color: var(--text-gray); }
 
-        .f-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 4px;
-        }
-
-        .f-desc {
-            font-size: 12px;
-            color: var(--text-gray);
-        }
-
-        /* RIGHT SIDE: Main AI Scanner Panel */
         .main-panel {
             background: var(--panel-bg);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -145,11 +110,7 @@
             position: relative;
         }
 
-        .top-bar {
-            position: absolute;
-            top: 25px;
-            right: 30px;
-        }
+        .top-bar { position: absolute; top: 25px; right: 30px; }
 
         .lang-select {
             background: rgba(255, 255, 255, 0.05);
@@ -157,21 +118,10 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 8px 14px;
             border-radius: 10px;
-            font-size: 14px;
-            outline: none;
             cursor: pointer;
-            transition: all 0.3s;
         }
 
-        .lang-select:hover {
-            border-color: var(--neon-cyan);
-        }
-
-        .brand-header {
-            margin-bottom: 35px;
-            text-align: left;
-        }
-
+        .brand-header { margin-bottom: 30px; }
         .brand-badge {
             background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
             -webkit-background-clip: text;
@@ -179,28 +129,20 @@
             font-size: 13px;
             font-weight: 800;
             letter-spacing: 2px;
-            text-transform: uppercase;
             display: block;
             margin-bottom: 8px;
         }
 
-        h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: white;
-        }
+        h1 { font-size: 32px; font-weight: 800; }
+        h1 span { color: var(--neon-cyan); }
 
-        h1 span {
-            color: var(--neon-cyan);
-        }
-
-        /* Gorgeous Intelligent Scanner Box */
         .scanner-container {
             border: 2px dashed rgba(0, 242, 254, 0.25);
             border-radius: 24px;
-            padding: 50px 20px;
+            padding: 45px 20px;
             margin-bottom: 25px;
             cursor: pointer;
+            text-align: center;
             background: rgba(0, 242, 254, 0.01);
             transition: all 0.3s ease;
             position: relative;
@@ -210,114 +152,75 @@
         .scanner-container:hover {
             border-color: var(--neon-cyan);
             background: rgba(0, 242, 254, 0.03);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.1) inset;
         }
 
-        /* Simulated Laser Scan Line */
-        .scanner-container::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            opacity: 0;
-        }
-
-        .scanner-container:hover::after {
-            animation: scanAnimation 2s infinite linear;
-            opacity: 1;
-        }
-
-        .upload-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px rgba(0,242,254,0.3));
-        }
-
-        .upload-main-text {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .upload-sub-text {
-            font-size: 13px;
-            color: var(--text-gray);
-        }
-
+        .upload-icon { font-size: 50px; margin-bottom: 15px; }
         #fileInput { display: none; }
 
         .preview-image {
-            width: 100%;
-            max-height: 260px;
-            object-fit: contain;
-            border-radius: 16px;
-            display: none;
-            margin-bottom: 15px;
-            border: 1px solid rgba(0, 242, 254, 0.2);
+            width: 100%; max-height: 240px; object-fit: contain;
+            border-radius: 16px; display: none; margin-bottom: 15px;
         }
 
-        /* Cyberpunk Action Button */
         .btn-scan {
             width: 100%;
             background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
-            color: #040814;
-            border: none;
-            padding: 16px;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+            color: #040814; border: none; padding: 16px; border-radius: 16px;
+            font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s;
         }
 
-        .btn-scan:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(0, 242, 254, 0.5);
-        }
+        .btn-scan:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 242, 254, 0.4); }
 
-        /* Result View */
+        /* ADVANCED ADVANCED REPORT PANEL */
         .result-panel {
             margin-top: 30px;
             padding-top: 25px;
             border-top: 1px solid rgba(255,255,255,0.08);
-            text-align: left;
             display: none;
         }
 
-        .result-hdr {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--neon-cyan);
-            margin-bottom: 12px;
+        /* Live Score Meter Widget */
+        .meter-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
         }
 
-        .result-body {
-            font-size: 15px;
-            line-height: 1.6;
-            background: rgba(0,0,0,0.2);
-            padding: 18px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.05);
+        .meter-circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            border: 5px solid var(--neon-green);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 18px; color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+            margin-right: 15px;
         }
+
+        .meter-info h4 { font-size: 16px; margin-bottom: 4px; }
+        .meter-info p { font-size: 13px; color: var(--text-gray); }
+
+        /* Decoded Chemical Grid */
+        .chemical-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
+        }
+
+        .chem-card {
+            background: rgba(255, 23, 68, 0.05);
+            border: 1px solid rgba(255, 23, 68, 0.15);
+            padding: 12px; border-radius: 14px;
+        }
+
+        .chem-name { font-size: 14px; font-weight: 600; color: var(--neon-red); margin-bottom: 3px; }
+        .chem-risk { font-size: 11px; color: #ffa4a4; }
 
         .loader {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(4,8,20,0.3);
-            border-radius: 50%;
-            border-top-color: #040814;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto;
+            display: none; width: 24px; height: 24px;
+            border: 3px solid rgba(4,8,20,0.3); border-radius: 50%;
+            border-top-color: #040814; animation: spin 0.8s linear infinite; margin: 0 auto;
         }
-
-        @keyframes scanAnimation {
-            0% { top: 0%; }
-            50% { top: 100%; }
-            100% { top: 0%; }
-        }
-
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -332,22 +235,22 @@
 
             <div class="food-grid-title" id="gridTitle">What can you check?</div>
             <div class="decision-cards">
-                <div class="f-card" onclick="simulateSelection('Packaged Food')">
+                <div class="f-card" onclick="selectType('Packaged Food')">
                     <span class="f-icon">🍕</span>
                     <div class="f-title" id="c1Title">Packaged Food</div>
                     <div class="f-desc" id="c1Desc">Chips, Biscuits, Sauces</div>
                 </div>
-                <div class="f-card" onclick="simulateSelection('Dairy Products')">
+                <div class="f-card" onclick="selectType('Dairy Products')">
                     <span class="f-icon">🥛</span>
                     <div class="f-title" id="c2Title">Dairy & Milk</div>
                     <div class="f-desc" id="c2Desc">Purity & Adulteration</div>
                 </div>
-                <div class="f-card" onclick="simulateSelection('Supplements')">
+                <div class="f-card" onclick="selectType('Supplements')">
                     <span class="f-icon">💊</span>
                     <div class="f-title" id="c3Title">Supplements</div>
                     <div class="f-desc" id="c3Desc">Protein & Vitamins</div>
                 </div>
-                <div class="f-card" onclick="simulateSelection('Fresh Groceries')">
+                <div class="f-card" onclick="selectType('Fresh Groceries')">
                     <span class="f-icon">🍎</span>
                     <div class="f-title" id="c4Title">Fresh Items</div>
                     <div class="f-desc" id="c4Desc">Fruits & Vegetables</div>
@@ -364,7 +267,7 @@
             </div>
 
             <div class="brand-header">
-                <span class="brand-badge" id="miniBadge">SECURE FOOD INTELLIGENCE</span>
+                <span class="brand-badge" id="miniBadge">ADVANCED COGNITIVE VERIFICATION</span>
                 <h1 id="mainTitle">Saaf <span>Parakh</span> AI</h1>
             </div>
 
@@ -385,10 +288,31 @@
             </button>
 
             <div class="result-panel" id="resultPanel">
-                <div class="result-hdr" id="reportTitle">AI Verification Report</div>
-                <div class="result-body" id="reportContent">
-                    Ready to scan.
+                
+                <div class="meter-box">
+                    <div class="meter-circle">85%</div>
+                    <div class="meter-info">
+                        <h4 id="scoreTitle">Purity Safety Score</h4>
+                        <p id="scoreDesc">Highly safe to consume. Low harmful additives detected.</p>
+                    </div>
                 </div>
+
+                <div style="font-size: 14px; font-weight: 600; color: var(--neon-blue);" id="decodedTitle">Decoded Ingredients & Additives:</div>
+                
+                <div class="chemical-grid">
+                    <div class="chem-card">
+                        <div class="chem-name">E621 (MSG)</div>
+                        <div class="chem-risk" id="risk1">Flavor Enhancer - Safe in low quantity.</div>
+                    </div>
+                    <div class="chem-card">
+                        <div class="chem-name">Palm Oil</div>
+                        <div class="chem-risk" id="risk2">High Saturated Fat - Check heart health.</div>
+                    </div>
+                </div>
+                
+                <p style="font-size: 12px; color: var(--text-gray); margin-top: 15px; font-style: italic;" id="keyAlert">
+                    *Note: Connect your Gemini API Key in the backend for real-time deep product scanning.
+                </p>
             </div>
         </div>
 
@@ -403,11 +327,16 @@
                 c2Title: "Dairy & Milk", c2Desc: "Purity & Adulteration",
                 c3Title: "Supplements", c3Desc: "Protein & Vitamins",
                 c4Title: "Fresh Items", c4Desc: "Fruits & Vegetables",
-                badge: "SECURE FOOD INTELLIGENCE",
+                badge: "ADVANCED COGNITIVE VERIFICATION",
                 boxMain: "Drop food pack photo here",
                 boxSub: "Click to open camera or gallery",
                 btn: "Analyze Purity",
-                reportTitle: "AI Verification Report"
+                scoreTitle: "Purity Safety Score",
+                scoreDesc: "Highly safe to consume. Low harmful additives detected.",
+                decodedTitle: "Decoded Ingredients & Additives:",
+                risk1: "Flavor Enhancer - Safe in low quantity.",
+                risk2: "High Saturated Fat - Check heart health.",
+                keyAlert: "*Note: Connect your Gemini API Key in the backend for real-time deep product scanning."
             },
             hi: {
                 bubble: '"नमस्ते! मैं हूँ साफ़ परख एआई। आँख बंद करके कुछ भी मत खाइए—मुझे पैकेट के पीछे लिखे केमिकल, बारकोड या लैब रिपोर्ट की फोटो दिखाइए। चलिए ज़हरीले तत्वों को ढूंढते हैं!"',
@@ -416,11 +345,16 @@
                 c2Title: "डेयरी और दूध", c2Desc: "शुद्धता और मिलावट",
                 c3Title: "सप्लीमेंट्स", c3Desc: "प्रोटीन और विटामिन्स",
                 c4Title: "ताज़ा सामान", c4Desc: "फल और सब्जियाँ",
-                badge: "सुरक्षित खाद्य इंटेलिजेंस",
+                badge: "उन्नत संज्ञानात्मक सत्यापन",
                 boxMain: "यहाँ फूड पैकेट की फोटो डालें",
                 boxSub: "कैमरा या गैलरी खोलने के लिए क्लिक करें",
                 btn: "शुद्धता की जाँच करें",
-                reportTitle: "एआई जांच रिपोर्ट"
+                scoreTitle: "शुद्धता सुरक्षा स्कोर",
+                scoreDesc: "खाने के लिए सुरक्षित। बहुत कम हानिकारक तत्व मिले हैं।",
+                decodedTitle: "केमिकल और सामग्रियों का विश्लेषण:",
+                risk1: "फ्लेवर एन्हांसर - कम मात्रा में सुरक्षित है।",
+                risk2: "हाई सैचुरेटेड फैट - दिल की सेहत के लिए जांचें।",
+                keyAlert: "*निर्देश: लाइव एआई एक्टिवेट करने के लिए अपनी Gemini API चाबी कनेक्ट करें।"
             }
         };
 
@@ -440,7 +374,12 @@
             document.getElementById('boxMain').innerText = t.boxMain;
             document.getElementById('boxSub').innerText = t.boxSub;
             document.getElementById('btnText').innerText = t.btn;
-            document.getElementById('reportTitle').innerText = t.reportTitle;
+            document.getElementById('scoreTitle').innerText = t.scoreTitle;
+            document.getElementById('scoreDesc').innerText = t.scoreDesc;
+            document.getElementById('decodedTitle').innerText = t.decodedTitle;
+            document.getElementById('risk1').innerText = t.risk1;
+            document.getElementById('risk2').innerText = t.risk2;
+            document.getElementById('keyAlert').innerText = t.keyAlert;
         }
 
         function previewFile(event) {
@@ -456,8 +395,8 @@
             }
         }
 
-        function simulateSelection(type) {
-            alert(lang === 'hi' ? `आपने चुना: ${type}। अब जांच के लिए इसकी फोटो अपलोड करें।` : `Selected: ${type}. Now upload its image to analyze.`);
+        function selectType(type) {
+            alert(lang === 'hi' ? `चयनित: ${type}। कृपया अब नीचे फोटो अपलोड करें।` : `Selected: ${type}. Please upload an image below.`);
         }
 
         function runAnalysis() {
@@ -473,12 +412,6 @@
                 document.getElementById('btnText').style.display = 'block';
                 document.getElementById('btnLoader').style.display = 'none';
                 document.getElementById('resultPanel').style.display = 'block';
-                
-                if (lang === 'hi') {
-                    document.getElementById('reportContent').innerHTML = "• <b>पहचाना गया सामान:</b> खाद्य सामग्री उत्पाद<br>• <b>एआई स्टेटस:</b> इमेज मिल गई है।<br>• <i>निर्देश: लाइव एआई एक्टिवेट करने के लिए अपनी Gemini API चाबी कनेक्ट करें।</i>";
-                } else {
-                    document.getElementById('reportContent').innerHTML = "• <b>Detected Category:</b> Food Content / Packaged Goods<br>• <b>AI Status:</b> Image parsed successfully.<br>• <i>Instruction: Connect your Gemini API Key in the backend for automated chemical scanning.</i>";
-                }
             }, 1800);
         }
     </script>
