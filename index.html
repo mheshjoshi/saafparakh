@@ -7,32 +7,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* यहाँ आपका ओरिजिनल CSS कोड है */
-        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.75); --neon-cyan: #00f2fe; --text-light: #f8fafc; }
+        /* तुम्हारा ओरिजिनल प्रीमियम CSS */
+        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.75); --neon-cyan: #00f2fe; --neon-red: #ff1744; --text-light: #f8fafc; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-dark); color: var(--text-light); font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif; padding: 40px 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { background-color: var(--bg-dark); color: var(--text-light); font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif; padding: 40px 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-image: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.15), transparent 50%); }
         .wrapper { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; }
         .main-panel { background: var(--panel-bg); padding: 40px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(25px); }
-        .scanner-box { border: 2px dashed var(--neon-cyan); padding: 55px 20px; text-align: center; cursor: pointer; border-radius: 24px; margin-bottom: 25px; }
-        .btn-action { width: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); padding: 16px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; color: #040814; }
-        .map-section { margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .map-box { background: rgba(255, 23, 68, 0.05); border: 1px solid rgba(255, 23, 68, 0.2); padding: 20px; border-radius: 16px; text-align: center; }
-        #fileInput { display: none; }
-        .preview-img { width: 100%; max-height: 200px; object-fit: contain; margin-bottom: 10px; display: none; }
+        .scanner-box { border: 2px dashed rgba(0, 242, 254, 0.25); border-radius: 24px; padding: 40px 20px; text-align: center; cursor: pointer; margin-bottom: 25px; }
+        .preview-img { width: 100%; max-height: 260px; object-fit: contain; border-radius: 16px; display: none; margin-bottom: 15px; }
+        .btn-action { width: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); padding: 16px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; color: #040814; margin-bottom: 15px; }
+        .map-box { background: rgba(255, 23, 68, 0.05); border: 1px solid var(--neon-red); padding: 15px; border-radius: 16px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
     <div class="left-side">
-        <div class="ai-bubble" id="aiBubble">"Hey! I am Saaf Parakh AI. Scan your food pack."</div>
+        <div class="ai-bubble" id="aiBubble">"Hey! Scan your food pack to detect hidden chemicals."</div>
     </div>
 
     <div class="main-panel">
-        <select id="langSelector" onchange="switchLanguage()">
-            <option value="en">English</option>
-            <option value="hi">हिंदी</option>
-        </select>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <h1 id="t1">Saaf Parakh AI</h1>
+            <select id="langSelector" class="lang-select" onchange="switchLanguage()">
+                <option value="en">EN</option>
+                <option value="hi">HI</option>
+            </select>
+        </div>
 
         <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
             <img id="imagePreview" class="preview-img">
@@ -42,13 +43,11 @@
 
         <button class="btn-action" onclick="runAnalysis()">🚀 <span id="btnTxt">Analyze Purity</span></button>
 
-        <div class="map-section">
-            <h3 id="mapTitle" style="color: #ff1744; margin-bottom: 10px;">📍 Live Danger Map</h3>
-            <div class="map-box">
-                <p id="mapDesc">Live monitoring of adulterated products in your area.</p>
-                <div id="mapPlaceholder" style="margin-top:10px; height: 100px; background: rgba(0,0,0,0.3); border-radius: 8px; display: flex; align-items:center; justify-content:center;">
-                    [Interactive Map Loading...]
-                </div>
+        <div class="map-box" onclick="alert('Opening Danger Map...')">
+            <span style="font-size: 24px;">📍</span>
+            <div>
+                <h4 id="mapTitle">Live Danger Map</h4>
+                <p id="mapDesc" style="font-size: 12px; opacity: 0.7;">Check nearby contaminated items</p>
             </div>
         </div>
     </div>
@@ -58,8 +57,8 @@
     const supabase = supabasejs.createClient('https://ohhwmjfgfvmcuisdqnrh.supabase.co', 'AIzaSyChFWz5S3tPru_zGBWDvDQLcVYskd_wcdU');
     
     const loc = {
-        en: { bubble: "Hey! Scan your food pack.", boxM: "Take a photo or choose a file", btn: "Analyze Purity", mapTitle: "Live Danger Map", mapDesc: "Live monitoring of adulterated products." },
-        hi: { bubble: "नमस्ते! अपने खाद्य पैकेट को स्कैन करें।", boxM: "फोटो लें या फाइल चुनें", btn: "शुद्धता की जांच करें", mapTitle: "डेंजर मैप", mapDesc: "आस-पास के मिलावटी उत्पादों की लाइव मॉनिटरिंग।" }
+        en: { bubble: "Hey! Scan your food pack.", boxM: "Take a photo or choose a file", btn: "Analyze Purity", mapTitle: "Live Danger Map", mapDesc: "Check nearby contaminated items" },
+        hi: { bubble: "नमस्ते! अपने खाद्य पैकेट को स्कैन करें।", boxM: "फोटो लें या फाइल चुनें", btn: "शुद्धता की जांच करें", mapTitle: "डेंजर मैप", mapDesc: "आस-पास के मिलावटी उत्पादों को देखें" }
     };
 
     function switchLanguage() {
@@ -85,8 +84,10 @@
     }
 
     async function runAnalysis() {
-        const { error } = await supabase.from('reports').insert([{ product_name: "Test", danger_level: 'High' }]);
-        alert(error ? "Error!" : "Reported to Danger Map!");
+        const file = document.getElementById('fileInput').files[0];
+        if(!file) return alert("Please upload a photo!");
+        const { error } = await supabase.from('reports').insert([{ product_name: "User Scan", danger_level: 'High' }]);
+        alert(error ? "Error!" : "Reported successfully!");
     }
 </script>
 </body>
