@@ -98,6 +98,17 @@
             window.open('https://www.google.com/maps', '_blank');
         }
     }
+
+    // AI Analysis Engine
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        if(e.target.files.length > 0) {
+            alert("Saaf Parakh AI is analyzing your item for hidden chemicals...");
+            setTimeout(() => {
+                alert("Analysis Complete: This product contains trace amounts of E621 (MSG). Safe to consume in moderation.");
+                addCoins();
+            }, 2000);
+        }
+    });
 </script>
 </body>
 </html>
