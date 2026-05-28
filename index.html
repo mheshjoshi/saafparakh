@@ -1,62 +1,71 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI | Pro Lab</title>
+    <title>Saaf Parakh AI | Final Unified App</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --neon: #00f2fe; --bg: #040814; }
-        body { background: var(--bg); color: white; font-family: 'Outfit', sans-serif; margin: 0; padding: 20px; text-align: center; }
-        .dashboard { max-width: 500px; margin: auto; background: #0b132b; padding: 30px; border-radius: 30px; border: 1px solid var(--neon); box-shadow: 0 0 30px rgba(0, 242, 254, 0.2); }
-        .coin-box { font-size: 20px; font-weight: bold; color: var(--neon); margin-bottom: 20px; }
-        .btn { background: linear-gradient(90deg, #4facfe, #00f2fe); border: none; padding: 15px 40px; border-radius: 15px; cursor: pointer; font-weight: 800; font-size: 16px; margin-top: 15px; }
+        /* प्रीमियम डार्क स्टाइल */
+        body { background: #040814; color: #fff; font-family: 'Outfit', sans-serif; padding: 20px; text-align: center; }
+        .dashboard { max-width: 500px; margin: auto; background: rgba(11, 19, 43, 0.9); padding: 30px; border-radius: 30px; border: 1px solid #00f2fe; }
+        .lang-box { margin-bottom: 20px; }
+        .btn { background: linear-gradient(90deg, #4facfe, #00f2fe); border: none; padding: 15px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
+        #scanner-box { border: 2px dashed #00f2fe; padding: 40px; margin: 20px 0; border-radius: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="dashboard">
-    <h1>Saaf <span>Parakh</span> AI</h1>
-    <div class="coin-box" id="wallet">💰 Wallet: 0 Coins</div>
-    
-    <div id="upload-zone" style="border: 2px dashed var(--neon); padding: 40px; border-radius: 20px; margin: 20px 0;">
-        <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
-        <p>📷 फोटो अपलोड करें</p>
+    <div class="lang-box">
+        <select id="lang" onchange="applyLang()">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+        </select>
     </div>
-    
-    <button class="btn" onclick="submitData()">🚀 शुद्धता की जांच करें</button>
+
+    <h1 id="t1">Saaf Parakh AI</h1>
+    <div id="w1">💰 Wallet: 0 Coins</div>
+
+    <div id="scanner-box" onclick="document.getElementById('f1').click()">
+        <p id="t2">📸 Upload / फोटो अपलोड करें</p>
+        <input type="file" id="f1" style="display:none" onchange="processImg()">
+    </div>
+
+    <button class="btn" id="b1" onclick="saveData()">🚀 Check Purity / शुद्धता की जांच करें</button>
+    <button class="btn" id="b2" onclick="openMap()" style="background: #ff1744;">📍 View Danger Map / डेंजर मैप देखें</button>
 </div>
 
 <script>
     // Supabase Config
-    const supabaseUrl = 'https://ohhwmjfgfvmcuisdqnrh.supabase.co';
-    const supabaseKey = 'AIzaSyChFWz5S3tPru_zGBWDvDQLcVYskd_wcdU';
-    const supabase = supabasejs.createClient(supabaseUrl, supabaseKey);
+    const supabase = supabasejs.createClient('https://ohhwmjfgfvmcuisdqnrh.supabase.co', 'AIzaSyChFWz5S3tPru_zGBWDvDQLcVYskd_wcdU');
 
-    let currentBalance = 0;
+    // Language Data
+    const langData = {
+        en: { t1: "Saaf Parakh AI", w1: "Wallet: 0 Coins", t2: "Upload Photo", b1: "Check Purity", b2: "View Danger Map" },
+        hi: { t1: "साफ़ परख एआई", w1: "वॉलेट: 0 सिक्के", t2: "फोटो अपलोड करें", b1: "शुद्धता की जांच करें", b2: "डेंजर मैप देखें" }
+    };
 
-    // रिपोर्ट सबमिट फंक्शन
-    async function submitData() {
-        const productName = prompt("प्रॉडक्ट का नाम क्या है?");
-        if(!productName) return;
-
-        // Supabase में डेटा भेजें
-        const { error } = await supabase
-            .from('reports')
-            .insert([{ product_name: productName, danger_level: 'High' }]);
-
-        if (error) {
-            alert("Error: " + error.message);
-        } else {
-            currentBalance += 10;
-            document.getElementById('wallet').innerText = `💰 Wallet: ${currentBalance} Coins`;
-            alert("सफलता! रिपोर्ट दर्ज हुई। आपको 10 कॉइन्स मिले!");
-        }
+    function applyLang() {
+        const l = document.getElementById('lang').value;
+        document.getElementById('t1').innerText = langData[l].t1;
+        document.getElementById('w1').innerText = langData[l].w1;
+        document.getElementById('t2').innerText = langData[l].t2;
+        document.getElementById('b1').innerText = langData[l].b1;
+        document.getElementById('b2').innerText = langData[l].b2;
     }
 
-    function previewImage(event) {
-        alert("इमेज सिलेक्ट हो गई! अब 'शुद्धता की जांच करें' दबाएं।");
+    async function saveData() {
+        const item = prompt("Product Name?");
+        if(!item) return;
+        const { error } = await supabase.from('reports').insert([{ product_name: item, danger_level: 'High' }]);
+        error ? alert("Error!") : alert("Reported Successfully!");
     }
+
+    function openMap() {
+        alert("Redirecting to your Danger Map...");
+    }
+
+    function processImg() { alert("Image Received!"); }
 </script>
 </body>
 </html>
