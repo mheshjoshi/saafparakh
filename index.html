@@ -1,29 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saaf Parakh AI - Premium Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Pulse Animation for Live Map */
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 23, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 23, 68, 0); } }
-        .map-box { 
-            background: rgba(255, 23, 68, 0.05); 
-            border: 1px solid var(--neon-red); 
-            padding: 15px; 
-            border-radius: 16px; 
-            margin-bottom: 15px; 
+        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.85); --neon-cyan: #00f2fe; --neon-red: #ff1744; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            /* फूड सिक्योरिटी बैकग्राउंड */
+            background: linear-gradient(rgba(4, 8, 20, 0.9), rgba(4, 8, 20, 0.9)), 
+                        url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white; 
+            font-family: 'Outfit', sans-serif; 
+            padding: 20px; 
             display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            cursor: pointer; 
-            animation: pulse 2s infinite; /* यह उसे 'Live' जैसा लुक देगा */
-            transition: 0.4s;
+            justify-content: center; 
+            min-height: 100vh; 
         }
-        .map-box:hover { transform: scale(1.02); background: rgba(255, 23, 68, 0.15); }
-        .map-icon { font-size: 30px; position: relative; }
+        
+        .container { width: 100%; max-width: 500px; }
+        
+        .wallet-badge { background: linear-gradient(90deg, #ffd700, #ff8c00); padding: 8px 16px; border-radius: 20px; color: black; font-weight: 800; display: inline-block; margin-bottom: 15px; }
+        .header-section { background: rgba(0, 242, 254, 0.1); padding: 20px; border-radius: 20px; border: 1px solid var(--neon-cyan); margin-bottom: 20px; line-height: 1.5; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .card { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .scanner-box { border: 2px dashed var(--neon-cyan); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 15px; cursor: pointer; background: rgba(0,0,0,0.3); }
+        .map-box { background: rgba(255, 23, 68, 0.1); border: 1px solid var(--neon-red); padding: 15px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        
+        .btn-row { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 15px; border-radius: 15px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
     </style>
+</head>
+<body>
 
-    <div class="map-box" onclick="window.open('https://www.google.com/maps/search/food+safety+danger+zones', '_blank')">
-        <div class="map-icon">📍</div>
+<div class="container">
+    <div class="wallet-badge">💰 Super Coins: <span id="coinCount">0</span></div>
+    
+    <div class="header-section">
+        "Hey! I am Saaf Parakh AI. Don't just eat blindly—show me the ingredients, barcode, or the lab-report of your food pack. Let's filter out hidden chemicals together!"
+    </div>
+
+    <h3>WHAT CAN YOU CHECK?</h3>
+    <div class="grid">
+        <div class="card">🍕<br>Packaged Food</div>
+        <div class="card">🥛<br>Dairy & Milk</div>
+        <div class="card">💊<br>Supplements</div>
+        <div class="card">🍎<br>Fresh Items</div>
+    </div>
+
+    <h1>Saaf Parakh AI</h1>
+
+    <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
+        📸 Take a photo or choose a file<br>
+        <input type="file" id="fileInput" style="display:none;" onchange="addCoins()">
+    </div>
+
+    <div class="map-box">
+        <span style="font-size: 24px;">📍</span>
         <div>
             <strong style="color: var(--neon-red);">Live Danger Map</strong><br>
-            <small style="opacity: 0.8;">Tap to see real-time contaminant zones</small>
+            <small style="opacity: 0.8;">Check contaminated items nearby</small>
         </div>
-        <div style="margin-left: auto; font-size: 20px;">➔</div>
     </div>
-    
+
+    <div class="btn-row">
+        <button class="btn" style="background: var(--neon-cyan);" onclick="addCoins()">🚀 Analyze Purity</button>
+        <button class="btn" style="background: #ff1744; color: white;">⚠️ Danger Report</button>
+    </div>
+</div>
+
+<script>
+    let coins = 0;
+    function addCoins() {
+        coins += 10;
+        document.getElementById('coinCount').innerText = coins;
+    }
+</script>
+</body>
+</html>
