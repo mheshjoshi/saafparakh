@@ -3,91 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI - Premium Lab Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <title>Saaf Parakh AI - Advanced Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* तुम्हारा ओरिजिनल प्रीमियम CSS */
-        :root { --bg-dark: #040814; --panel-bg: rgba(11, 19, 43, 0.75); --neon-cyan: #00f2fe; --neon-red: #ff1744; --text-light: #f8fafc; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-dark); color: var(--text-light); font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif; padding: 40px 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-image: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.15), transparent 50%); }
-        .wrapper { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; }
-        .main-panel { background: var(--panel-bg); padding: 40px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(25px); }
-        .scanner-box { border: 2px dashed rgba(0, 242, 254, 0.25); border-radius: 24px; padding: 40px 20px; text-align: center; cursor: pointer; margin-bottom: 25px; }
-        .preview-img { width: 100%; max-height: 260px; object-fit: contain; border-radius: 16px; display: none; margin-bottom: 15px; }
-        .btn-action { width: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); padding: 16px; border-radius: 16px; border: none; font-weight: 700; cursor: pointer; color: #040814; margin-bottom: 15px; }
-        .map-box { background: rgba(255, 23, 68, 0.05); border: 1px solid var(--neon-red); padding: 15px; border-radius: 16px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        :root { --bg: #040814; --neon: #00f2fe; }
+        body { background: var(--bg); color: white; font-family: 'Outfit', sans-serif; padding: 20px; }
+        .container { max-width: 500px; margin: auto; }
+        /* वॉलेट बार */
+        .wallet-bar { background: rgba(0, 242, 254, 0.1); padding: 10px; border-radius: 12px; text-align: center; margin-bottom: 20px; border: 1px solid var(--neon); color: var(--neon); font-weight: 700; }
+        /* स्कैनर बॉक्स */
+        .scanner-box { border: 2px dashed var(--neon); padding: 30px; border-radius: 20px; text-align: center; margin: 15px 0; cursor: pointer; }
+        /* मैप बटन */
+        .map-box { background: rgba(255, 23, 68, 0.1); border: 1px solid #ff1744; padding: 15px; border-radius: 16px; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <div class="left-side">
-        <div class="ai-bubble" id="aiBubble">"Hey! Scan your food pack to detect hidden chemicals."</div>
+<div class="container">
+    <div class="wallet-bar" id="wallet">💰 Wallet: 0 Coins</div>
+
+    <select id="langSelector" onchange="switchLanguage()" style="background:transparent; color:white; border:1px solid white; padding:5px; border-radius:8px;">
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+    </select>
+
+    <h1>Saaf Parakh AI</h1>
+
+    <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
+        <img id="imagePreview" style="max-width:100%; display:none; border-radius:10px;">
+        <div id="uploadPrompt">📸 <span id="textUpload">Take a photo or choose a file</span></div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" onchange="loadPreview(event)" style="display:none;">
+
+    <div class="map-box" onclick="alert('Opening Map...')">
+        <span>📍</span>
+        <div>
+            <h4 id="textMap">Live Danger Map</h4>
+            <p style="font-size: 12px; opacity: 0.7;">Check nearby contaminated products</p>
+        </div>
     </div>
 
-    <div class="main-panel">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <h1 id="t1">Saaf Parakh AI</h1>
-            <select id="langSelector" class="lang-select" onchange="switchLanguage()">
-                <option value="en">EN</option>
-                <option value="hi">HI</option>
-            </select>
-        </div>
-
-        <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
-            <img id="imagePreview" class="preview-img">
-            <div id="uploadPrompt">📸 <span id="boxM">Take a photo or choose a file</span></div>
-        </div>
-        <input type="file" id="fileInput" accept="image/*" onchange="loadPreview(event)">
-
-        <button class="btn-action" onclick="runAnalysis()">🚀 <span id="btnTxt">Analyze Purity</span></button>
-
-        <div class="map-box" onclick="alert('Opening Danger Map...')">
-            <span style="font-size: 24px;">📍</span>
-            <div>
-                <h4 id="mapTitle">Live Danger Map</h4>
-                <p id="mapDesc" style="font-size: 12px; opacity: 0.7;">Check nearby contaminated items</p>
-            </div>
-        </div>
+    <div class="btn-row">
+        <button class="btn" style="background: var(--neon); color: black;" onclick="runAnalysis()">🚀 <span id="textAnalyze">Analyze Purity</span></button>
+        <button class="btn" style="background: #ff1744; color: white;">⚠️ <span id="textReport">Danger Report</span></button>
     </div>
 </div>
 
 <script>
-    const supabase = supabasejs.createClient('https://ohhwmjfgfvmcuisdqnrh.supabase.co', 'AIzaSyChFWz5S3tPru_zGBWDvDQLcVYskd_wcdU');
-    
-    const loc = {
-        en: { bubble: "Hey! Scan your food pack.", boxM: "Take a photo or choose a file", btn: "Analyze Purity", mapTitle: "Live Danger Map", mapDesc: "Check nearby contaminated items" },
-        hi: { bubble: "नमस्ते! अपने खाद्य पैकेट को स्कैन करें।", boxM: "फोटो लें या फाइल चुनें", btn: "शुद्धता की जांच करें", mapTitle: "डेंजर मैप", mapDesc: "आस-पास के मिलावटी उत्पादों को देखें" }
-    };
-
-    function switchLanguage() {
-        const l = document.getElementById('langSelector').value;
-        document.getElementById('aiBubble').innerText = loc[l].bubble;
-        document.getElementById('boxM').innerText = loc[l].boxM;
-        document.getElementById('btnTxt').innerText = loc[l].btn;
-        document.getElementById('mapTitle').innerText = loc[l].mapTitle;
-        document.getElementById('mapDesc').innerText = loc[l].mapDesc;
-    }
+    const supabase = supabasejs.createClient('https://ohhwmjfgfvmcuisdqnrh.supabase.co', 'YOUR_SUPABASE_KEY');
+    let coins = 0;
 
     function loadPreview(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('imagePreview').src = e.target.result;
-                document.getElementById('imagePreview').style.display = 'block';
-                document.getElementById('uploadPrompt').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.getElementById('imagePreview');
+            img.src = e.target.result;
+            img.style.display = 'block';
+            document.getElementById('uploadPrompt').style.display = 'none';
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
 
     async function runAnalysis() {
-        const file = document.getElementById('fileInput').files[0];
-        if(!file) return alert("Please upload a photo!");
-        const { error } = await supabase.from('reports').insert([{ product_name: "User Scan", danger_level: 'High' }]);
-        alert(error ? "Error!" : "Reported successfully!");
+        coins += 10;
+        document.getElementById('wallet').innerText = `💰 Wallet: ${coins} Coins`;
+        alert("Analysis Complete! 10 Coins added.");
+    }
+
+    function switchLanguage() {
+        const lang = document.getElementById('langSelector').value;
+        if(lang === 'hi') {
+            document.getElementById('textUpload').innerText = "फोटो लें या फाइल चुनें";
+            document.getElementById('textMap').innerText = "डेंजर मैप";
+            document.getElementById('textAnalyze').innerText = "शुद्धता की जाँच करें";
+            document.getElementById('textReport').innerText = "रिपोर्ट करें";
+        } else {
+            document.getElementById('textUpload').innerText = "Take a photo or choose a file";
+            document.getElementById('textMap').innerText = "Live Danger Map";
+            document.getElementById('textAnalyze').innerText = "Analyze Purity";
+            document.getElementById('textReport').innerText = "Danger Report";
+        }
     }
 </script>
 </body>
