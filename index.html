@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saaf Parakh AI - Adaptive Intelligence</title>
+    <title>Saaf Parakh AI - Premium Lab Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
             --neon-red: #ff1744;
             --text-light: #f8fafc;
             --text-gray: #94a3b8;
-            --border-glow: rgba(0, 242, 254, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,96 +29,97 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.12), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.15), transparent 50%),
                 radial-gradient(circle at 20% 80%, rgba(79, 172, 254, 0.12), transparent 50%),
-                linear-gradient(rgba(4, 8, 20, 0.9), rgba(4, 8, 20, 0.97)),
-                url('https://images.unsplash.com/photo-1543339308-43e59d6b73a6?q=80&w=1000&auto=format&fit=crop');
+                linear-gradient(rgba(4, 8, 20, 0.92), rgba(4, 8, 20, 0.98)),
+                url('https://images.unsplash.com/photo-1543339308-43e59d6b73a6?q=80&w=1200&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* MASTER WRAPPER: Desktop me 2 Columns, Mobile me 1 Column automatically */
+        /* MASTER ADAPTIVE WRAPPER */
         .wrapper {
             width: 100%;
-            max-width: 1150px;
+            max-width: 1200px;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1.1fr;
             gap: 40px;
             align-items: start;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* LEFT SIDE LAYOUT */
+        /* LEFT COLUMN (Sensory AI Panel) */
         .left-side {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 30px;
         }
 
         .ai-bubble {
             background: linear-gradient(135deg, rgba(79, 172, 254, 0.12), rgba(0, 242, 254, 0.12));
             border-left: 4px solid var(--neon-cyan);
-            padding: 22px;
+            padding: 24px;
             border-radius: 0 24px 24px 24px;
-            font-size: 16px;
+            font-size: 16.5px;
             line-height: 1.6;
             color: #e2e8f0;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .section-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 800;
             color: var(--neon-cyan);
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
         }
 
+        /* 4-Category Premium Grid for Desktop */
         .category-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 16px;
         }
 
         .category-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 20px;
-            padding: 20px 15px;
+            padding: 22px 16px;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .category-card:hover {
-            background: rgba(0, 242, 254, 0.06);
-            border-color: rgba(0, 242, 254, 0.3);
+            background: rgba(0, 242, 254, 0.05);
+            border-color: rgba(0, 242, 254, 0.25);
             transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.1);
+            box-shadow: 0 12px 24px rgba(0, 242, 254, 0.12);
         }
 
-        .cat-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+        .cat-icon { font-size: 34px; margin-bottom: 10px; display: block; }
         .cat-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
         .cat-desc { font-size: 12px; color: var(--text-gray); }
 
-        /* RIGHT SIDE LAYOUT (MAIN SCANNER PANEL) */
+        /* RIGHT COLUMN (Core Processing Unit) */
         .main-panel {
             background: var(--panel-bg);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 32px;
-            padding: 35px;
+            padding: 40px;
             backdrop-filter: blur(25px);
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
-        /* HEADER FIX: Responsive flex container without overlapping */
+        /* Header Layout Fix */
         .panel-header-area {
             display: flex;
             justify-content: space-between;
@@ -139,7 +139,7 @@
             text-transform: uppercase;
         }
 
-        .brand-info h1 { font-size: 28px; font-weight: 800; color: white; }
+        .brand-info h1 { font-size: 30px; font-weight: 800; color: white; line-height: 1.2; }
         .brand-info h1 span { color: var(--neon-cyan); }
 
         .lang-select {
@@ -151,15 +151,15 @@
             font-size: 14px;
             cursor: pointer;
             outline: none;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
-
         .lang-select:hover { border-color: var(--neon-cyan); }
 
+        /* Drag/Drop Click Upload Zone */
         .scanner-box {
             border: 2px dashed rgba(0, 242, 254, 0.25);
             border-radius: 24px;
-            padding: 50px 20px;
+            padding: 55px 20px;
             text-align: center;
             background: rgba(0, 242, 254, 0.01);
             margin-bottom: 25px;
@@ -172,12 +172,12 @@
             background: rgba(0, 242, 254, 0.04);
         }
 
-        .upload-icon { font-size: 48px; margin-bottom: 12px; }
+        .upload-icon { font-size: 52px; margin-bottom: 12px; }
         .upload-main-text { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
         .upload-sub-text { font-size: 13px; color: var(--text-gray); }
 
         .preview-img {
-            width: 100%; max-height: 250px; object-fit: contain;
+            width: 100%; max-height: 260px; object-fit: contain;
             border-radius: 16px; display: none; margin-bottom: 15px;
             border: 1px solid rgba(0, 242, 254, 0.2);
         }
@@ -194,10 +194,10 @@
 
         .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4); }
 
-        /* LIVE REPORT HUD */
+        /* REAL-TIME DASHBOARD REPORT */
         .report-section {
-            margin-top: 30px;
-            padding-top: 25px;
+            margin-top: 35px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255,255,255,0.1);
             display: none;
         }
@@ -205,38 +205,38 @@
         .meter-widget {
             display: flex;
             align-items: center;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
-            padding: 18px;
+            padding: 20px;
             border-radius: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .score-circle {
-            width: 60px; height: 60px; border-radius: 50%;
+            width: 65px; height: 65px; border-radius: 50%;
             border: 4px solid var(--neon-green);
             display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 18px; color: var(--neon-green);
+            font-weight: 800; font-size: 19px; color: var(--neon-green);
             box-shadow: 0 0 20px rgba(0, 230, 118, 0.25);
-            margin-right: 15px;
+            margin-right: 18px;
             flex-shrink: 0;
         }
 
-        .meter-text h4 { font-size: 16px; margin-bottom: 4px; font-weight: 700; }
+        .meter-text h4 { font-size: 17px; margin-bottom: 4px; font-weight: 700; }
         .meter-text p { font-size: 13px; color: var(--text-gray); line-height: 1.4; }
 
-        .chem-headline { font-size: 14px; font-weight: 700; color: var(--neon-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .chem-headline { font-size: 14px; font-weight: 700; color: var(--neon-blue); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .chem-row {
             background: rgba(255, 23, 68, 0.05);
             border: 1px solid rgba(255, 23, 68, 0.15);
-            padding: 14px; border-radius: 14px; margin-bottom: 10px;
+            padding: 15px; border-radius: 14px; margin-bottom: 12px;
         }
 
-        .chem-title { font-size: 14px; font-weight: 700; color: var(--neon-red); }
-        .chem-detail { font-size: 12.5px; color: #fdd; margin-top: 3px; line-height: 1.4; }
+        .chem-title { font-size: 14.5px; font-weight: 700; color: var(--neon-red); }
+        .chem-detail { font-size: 13px; color: #fdd; margin-top: 3px; line-height: 1.4; }
 
-        .api-note { font-size: 11.5px; color: var(--text-gray); text-align: center; margin-top: 20px; font-style: italic; }
+        .api-note { font-size: 12px; color: var(--text-gray); text-align: center; margin-top: 25px; font-style: italic; }
 
         .spinner {
             display: none; width: 24px; height: 24px;
@@ -245,18 +245,18 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* RESPONSIVE BREAKPOINT: Mobile / Laptop Auto Adaptor */
-        @media (max-width: 900px) {
-            body { padding: 10px; }
+        /* RESPONSIVE RESPONDER BREAKPOINT (LAPTOP vs MOBILE AUTOMATION) */
+        @media (max-width: 950px) {
+            body { padding: 20px 12px; }
             .wrapper {
-                grid-template-columns: 1fr; /* Single Column layout for mobile */
-                gap: 20px;
-                max-width: 480px;
+                grid-template-columns: 1fr; /* Single Column Layout Activated */
+                gap: 25px;
+                max-width: 490px;
             }
-            .left-side { order: -1; } /* Visual enhancements show first on scroll */
-            .main-panel { padding: 22px; border-radius: 24px; }
-            .panel-header-area { margin-bottom: 20px; }
-            .brand-info h1 { font-size: 24px; }
+            .left-side { order: -1; } 
+            .main-panel { padding: 26px 20px; border-radius: 24px; }
+            .brand-info h1 { font-size: 25px; }
+            .scanner-box { padding: 45px 15px; }
         }
     </style>
 </head>
@@ -282,6 +282,16 @@
                         <div class="cat-title" id="c2T">Dairy & Milk</div>
                         <div class="cat-desc" id="c2D">Adulteration Check</div>
                     </div>
+                    <div class="category-card" onclick="selectCategory('Supplements')">
+                        <span class="cat-icon">💊</span>
+                        <div class="cat-title" id="c3T">Supplements</div>
+                        <div class="cat-desc" id="c3D">Proteins & Vitamins</div>
+                    </div>
+                    <div class="category-card" onclick="selectCategory('Fresh Items')">
+                        <span class="cat-icon">🍎</span>
+                        <div class="cat-title" id="c4T">Fresh Items</div>
+                        <div class="cat-desc" id="c4D">Fruits & Veggies</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,14 +302,14 @@
                     <span class="brand-badge" id="miniBadge">COGNITIVE VERIFICATION</span>
                     <h1>Saaf <span>Parakh</span> AI</h1>
                 </div>
-                <select class="lang-select" id="langSelector" onchange="applyLanguage()">
+                <select class="lang-select" id="langSelector" onchange="switchLanguage()">
                     <option value="en">EN</option>
                     <option value="hi">HI</option>
                 </select>
             </div>
 
             <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
-                <img id="imagePreview" class="preview-img" alt="Food Pack View">
+                <img id="imagePreview" class="preview-img" alt="Uploaded Content View">
                 <div id="uploadPrompt">
                     <div class="upload-icon">📸</div>
                     <div class="upload-main-text" id="boxM">Take a photo or choose a file</div>
@@ -307,9 +317,9 @@
                 </div>
             </div>
 
-            <input type="file" id="fileInput" accept="image/*" onchange="processFile(event)">
+            <input type="file" id="fileInput" accept="image/*" onchange="loadPreview(event)">
 
-            <button class="btn-action" id="mainBtn" onclick="triggerScan()">
+            <button class="btn-action" id="mainBtn" onclick="runAnalysisMock()">
                 <span id="btnTxt">Analyze Purity</span>
                 <div class="spinner" id="btnSpinner"></div>
             </button>
@@ -341,12 +351,14 @@
     </div>
 
     <script>
-        const translationSet = {
+        const localization = {
             en: {
                 bubble: '"Hey! I am Saaf Parakh AI. Don\'t just eat blindly—show me the ingredients or barcode of your food pack. Let\'s filter out hidden chemicals!"',
                 gridTitle: "What can you check?",
                 c1T: "Packaged Food", c1D: "Chips & Biscuits",
                 c2T: "Dairy & Milk", c2D: "Adulteration Check",
+                c3T: "Supplements", c3D: "Proteins & Vitamins",
+                c4T: "Fresh Items", c4D: "Fruits & Veggies",
                 badge: "COGNITIVE VERIFICATION",
                 boxM: "Take a photo or choose a file",
                 boxS: "Supports JPG, PNG, WEBP",
@@ -363,6 +375,8 @@
                 gridTitle: "आप क्या जांच सकते हैं?",
                 c1T: "पैकेट बंद भोजन", c1D: "चिप्स और बिस्कुट",
                 c2T: "दूध और डेयरी", c2D: "मिलावट की जांच",
+                c3T: "सप्लीमेंट्स", c3D: "प्रोटीन और विटामिन्स",
+                c4T: "ताज़ा सामान", c4D: "फल और सब्जियाँ",
                 badge: "संज्ञानात्मक सत्यापन",
                 boxM: "फोटो लें या फाइल चुनें",
                 boxS: "JPG, PNG, WEBP सपोर्टेड",
@@ -376,29 +390,31 @@
             }
         };
 
-        let currentLanguage = 'en';
+        let activeLang = 'en';
 
-        function applyLanguage() {
-            currentLanguage = document.getElementById('langSelector').value;
-            const data = translationSet[currentLanguage];
+        function switchLanguage() {
+            activeLang = document.getElementById('langSelector').value;
+            const translation = localization[activeLang];
             
-            document.getElementById('aiBubble').innerText = data.bubble;
-            document.getElementById('gridTitle').innerText = data.gridTitle;
-            document.getElementById('c1T').innerText = data.c1T; document.getElementById('c1D').innerText = data.c1D;
-            document.getElementById('c2T').innerText = data.c2T; document.getElementById('c2D').innerText = data.c2D;
-            document.getElementById('miniBadge').innerText = data.badge;
-            document.getElementById('boxM').innerText = data.boxM;
-            document.getElementById('boxS').innerText = data.boxS;
-            document.getElementById('btnTxt').innerText = data.btn;
-            document.getElementById('repTitle').innerText = data.repTitle;
-            document.getElementById('repDesc').innerText = data.repDesc;
-            document.getElementById('chemHead').innerText = data.chemHead;
-            document.getElementById('r1').innerText = data.r1;
-            document.getElementById('r2').innerText = data.r2;
-            document.getElementById('apiAlert').innerText = data.api;
+            document.getElementById('aiBubble').innerText = translation.bubble;
+            document.getElementById('gridTitle').innerText = translation.gridTitle;
+            document.getElementById('c1T').innerText = translation.c1T; document.getElementById('c1D').innerText = translation.c1D;
+            document.getElementById('c2T').innerText = translation.c2T; document.getElementById('c2D').innerText = translation.c2D;
+            document.getElementById('c3T').innerText = translation.c3T; document.getElementById('c3D').innerText = translation.c3D;
+            document.getElementById('c4T').innerText = translation.c4T; document.getElementById('c4D').innerText = translation.c4D;
+            document.getElementById('miniBadge').innerText = translation.badge;
+            document.getElementById('boxM').innerText = translation.boxM;
+            document.getElementById('boxS').innerText = translation.boxS;
+            document.getElementById('btnTxt').innerText = translation.btn;
+            document.getElementById('repTitle').innerText = translation.repTitle;
+            document.getElementById('repDesc').innerText = translation.repDesc;
+            document.getElementById('chemHead').innerText = translation.chemHead;
+            document.getElementById('r1').innerText = translation.r1;
+            document.getElementById('r2').innerText = translation.r2;
+            document.getElementById('apiAlert').innerText = translation.api;
         }
 
-        function processFile(event) {
+        function loadPreview(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -411,13 +427,13 @@
             }
         }
 
-        function selectCategory(name) {
-            alert(currentLanguage === 'hi' ? `चयनित श्रेणी: ${name}। कृपया फोटो अपलोड करें।` : `Selected Category: ${name}. Please upload a product photo.`);
+        function selectCategory(categoryName) {
+            alert(activeLang === 'hi' ? `कैटेगरी सिलेक्टेड: ${categoryName}। अब नीचे इमेज अपलोड करें।` : `Category Selected: ${categoryName}. Now upload your product image below.`);
         }
 
-        function triggerScan() {
+        function runAnalysisMock() {
             if (!document.getElementById('fileInput').files[0]) {
-                alert(currentLanguage === 'hi' ? "कृपया पहले फोटो चुनें!" : "Please select a photo first!");
+                alert(activeLang === 'hi' ? "कृपया पहले एक फोटो अपलोड करें!" : "Please upload a photo first!");
                 return;
             }
             document.getElementById('btnTxt').style.display = 'none';
@@ -428,7 +444,7 @@
                 document.getElementById('btnTxt').style.display = 'block';
                 document.getElementById('btnSpinner').style.display = 'none';
                 document.getElementById('reportSection').style.display = 'block';
-            }, 1500);
+            }, 1600);
         }
     </script>
 </body>
