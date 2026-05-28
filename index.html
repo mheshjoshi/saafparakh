@@ -173,4 +173,263 @@
         }
 
         .upload-icon { font-size: 48px; margin-bottom: 12px; }
+        .upload-main-text { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .upload-sub-text { font-size: 13px; color: var(--text-gray); }
+
+        .preview-img {
+            width: 100%; max-height: 250px; object-fit: contain;
+            border-radius: 16px; display: none; margin-bottom: 15px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        #fileInput { display: none; }
+
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
+            color: #040814; border: none; padding: 16px; border-radius: 16px;
+            font-size: 17px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 5px 20px rgba(0, 242, 254, 0.25);
+        }
+
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4); }
+
+        /* LIVE REPORT HUD */
+        .report-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: none;
+        }
+
+        .meter-widget {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 18px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            border: 4px solid var(--neon-green);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 18px; color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 230, 118, 0.25);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .meter-text h4 { font-size: 16px; margin-bottom: 4px; font-weight: 700; }
+        .meter-text p { font-size: 13px; color: var(--text-gray); line-height: 1.4; }
+
+        .chem-headline { font-size: 14px; font-weight: 700; color: var(--neon-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .chem-row {
+            background: rgba(255, 23, 68, 0.05);
+            border: 1px solid rgba(255, 23, 68, 0.15);
+            padding: 14px; border-radius: 14px; margin-bottom: 10px;
+        }
+
+        .chem-title { font-size: 14px; font-weight: 700; color: var(--neon-red); }
+        .chem-detail { font-size: 12.5px; color: #fdd; margin-top: 3px; line-height: 1.4; }
+
+        .api-note { font-size: 11.5px; color: var(--text-gray); text-align: center; margin-top: 20px; font-style: italic; }
+
+        .spinner {
+            display: none; width: 24px; height: 24px;
+            border: 3px solid rgba(4,8,20,0.2); border-radius: 50%;
+            border-top-color: #040814; animation: spin 0.8s linear infinite; margin: 0 auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* RESPONSIVE BREAKPOINT: Mobile / Laptop Auto Adaptor */
+        @media (max-width: 900px) {
+            body { padding: 10px; }
+            .wrapper {
+                grid-template-columns: 1fr; /* Single Column layout for mobile */
+                gap: 20px;
+                max-width: 480px;
+            }
+            .left-side { order: -1; } /* Visual enhancements show first on scroll */
+            .main-panel { padding: 22px; border-radius: 24px; }
+            .panel-header-area { margin-bottom: 20px; }
+            .brand-info h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
         
+        <div class="left-side">
+            <div class="ai-bubble" id="aiBubble">
+                "Hey! I am Saaf Parakh AI. Don't just eat blindly—show me the ingredients or barcode of your food pack. Let's filter out hidden chemicals!"
+            </div>
+
+            <div>
+                <div class="section-title" id="gridTitle">What can you check?</div>
+                <div class="category-grid">
+                    <div class="category-card" onclick="selectCategory('Packaged Food')">
+                        <span class="cat-icon">🍕</span>
+                        <div class="cat-title" id="c1T">Packaged Food</div>
+                        <div class="cat-desc" id="c1D">Chips & Biscuits</div>
+                    </div>
+                    <div class="category-card" onclick="selectCategory('Dairy Purity')">
+                        <span class="cat-icon">🥛</span>
+                        <div class="cat-title" id="c2T">Dairy & Milk</div>
+                        <div class="cat-desc" id="c2D">Adulteration Check</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <div class="panel-header-area">
+                <div class="brand-info">
+                    <span class="brand-badge" id="miniBadge">COGNITIVE VERIFICATION</span>
+                    <h1>Saaf <span>Parakh</span> AI</h1>
+                </div>
+                <select class="lang-select" id="langSelector" onchange="applyLanguage()">
+                    <option value="en">EN</option>
+                    <option value="hi">HI</option>
+                </select>
+            </div>
+
+            <div class="scanner-box" onclick="document.getElementById('fileInput').click()">
+                <img id="imagePreview" class="preview-img" alt="Food Pack View">
+                <div id="uploadPrompt">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-main-text" id="boxM">Take a photo or choose a file</div>
+                    <div class="upload-sub-text" id="boxS">Supports JPG, PNG, WEBP</div>
+                </div>
+            </div>
+
+            <input type="file" id="fileInput" accept="image/*" onchange="processFile(event)">
+
+            <button class="btn-action" id="mainBtn" onclick="triggerScan()">
+                <span id="btnTxt">Analyze Purity</span>
+                <div class="spinner" id="btnSpinner"></div>
+            </button>
+
+            <div class="report-section" id="reportSection">
+                <div class="meter-widget">
+                    <div class="score-circle">85%</div>
+                    <div class="meter-text">
+                        <h4 id="repTitle">Purity Safety Score</h4>
+                        <p id="repDesc">Highly safe to consume. Very low harmful chemical activity found.</p>
+                    </div>
+                </div>
+
+                <div class="chem-headline" id="chemHead">Detected Additives:</div>
+                
+                <div class="chem-row">
+                    <div class="chem-title">E621 (Mono Sodium Glutamate)</div>
+                    <div class="chem-detail" id="r1">Flavor Enhancer - Frequent use is bad for gut health.</div>
+                </div>
+                <div class="chem-row">
+                    <div class="chem-title">Refined Palm Oil</div>
+                    <div class="chem-detail" id="r2">High saturated fats—not recommended for daily consumption.</div>
+                </div>
+
+                <div class="api-note" id="apiAlert">*Note: Connect your Gemini API Key in the backend for live real-time analysis.</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const translationSet = {
+            en: {
+                bubble: '"Hey! I am Saaf Parakh AI. Don\'t just eat blindly—show me the ingredients or barcode of your food pack. Let\'s filter out hidden chemicals!"',
+                gridTitle: "What can you check?",
+                c1T: "Packaged Food", c1D: "Chips & Biscuits",
+                c2T: "Dairy & Milk", c2D: "Adulteration Check",
+                badge: "COGNITIVE VERIFICATION",
+                boxM: "Take a photo or choose a file",
+                boxS: "Supports JPG, PNG, WEBP",
+                btn: "Analyze Purity",
+                repTitle: "Purity Safety Score",
+                repDesc: "Highly safe to consume. Very low harmful chemical activity found.",
+                chemHead: "Detected Additives:",
+                r1: "Flavor Enhancer - Frequent use is bad for gut health.",
+                r2: "High saturated fats—not recommended for daily consumption.",
+                api: "*Note: Connect your Gemini API Key in the backend for live real-time analysis."
+            },
+            hi: {
+                bubble: '"नमस्ते! मैं हूँ साफ़ परख एआई। आँख बंद करके कुछ भी मत खाइए—मुझे पैकेट की फोटो या सामग्री सूची दिखाइए। चलिए इसमें छिपे केमिकल्स को पकड़ते हैं!"',
+                gridTitle: "आप क्या जांच सकते हैं?",
+                c1T: "पैकेट बंद भोजन", c1D: "चिप्स और बिस्कुट",
+                c2T: "दूध और डेयरी", c2D: "मिलावट की जांच",
+                badge: "संज्ञानात्मक सत्यापन",
+                boxM: "फोटो लें या फाइल चुनें",
+                boxS: "JPG, PNG, WEBP सपोर्टेड",
+                btn: "शुद्धता की जाँच करें",
+                repTitle: "शुद्धता सुरक्षा स्कोर",
+                repDesc: "खाने के लिए अत्यधिक सुरक्षित। बहुत ही कम नुकसानदेह तत्व पाए गए हैं।",
+                chemHead: "पाए गए हानिकारक तत्व:",
+                r1: "फ्लेवर एन्हांसर - लगातार खाने से पेट की सेहत खराब होती है।",
+                r2: "पाम ऑयल - अत्यधिक सैचुरेटेड फैट, दैनिक उपयोग के लिए ठीक नहीं।",
+                api: "*निर्देश: लाइव एआई एक्टिवेट करने के लिए अपनी Gemini API चाबी बैकएंड में जोड़ें।"
+            }
+        };
+
+        let currentLanguage = 'en';
+
+        function applyLanguage() {
+            currentLanguage = document.getElementById('langSelector').value;
+            const data = translationSet[currentLanguage];
+            
+            document.getElementById('aiBubble').innerText = data.bubble;
+            document.getElementById('gridTitle').innerText = data.gridTitle;
+            document.getElementById('c1T').innerText = data.c1T; document.getElementById('c1D').innerText = data.c1D;
+            document.getElementById('c2T').innerText = data.c2T; document.getElementById('c2D').innerText = data.c2D;
+            document.getElementById('miniBadge').innerText = data.badge;
+            document.getElementById('boxM').innerText = data.boxM;
+            document.getElementById('boxS').innerText = data.boxS;
+            document.getElementById('btnTxt').innerText = data.btn;
+            document.getElementById('repTitle').innerText = data.repTitle;
+            document.getElementById('repDesc').innerText = data.repDesc;
+            document.getElementById('chemHead').innerText = data.chemHead;
+            document.getElementById('r1').innerText = data.r1;
+            document.getElementById('r2').innerText = data.r2;
+            document.getElementById('apiAlert').innerText = data.api;
+        }
+
+        function processFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('uploadPrompt').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function selectCategory(name) {
+            alert(currentLanguage === 'hi' ? `चयनित श्रेणी: ${name}। कृपया फोटो अपलोड करें।` : `Selected Category: ${name}. Please upload a product photo.`);
+        }
+
+        function triggerScan() {
+            if (!document.getElementById('fileInput').files[0]) {
+                alert(currentLanguage === 'hi' ? "कृपया पहले फोटो चुनें!" : "Please select a photo first!");
+                return;
+            }
+            document.getElementById('btnTxt').style.display = 'none';
+            document.getElementById('btnSpinner').style.display = 'block';
+            document.getElementById('reportSection').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('btnTxt').style.display = 'block';
+                document.getElementById('btnSpinner').style.display = 'none';
+                document.getElementById('reportSection').style.display = 'block';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
