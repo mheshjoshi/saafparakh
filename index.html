@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>साफ़ परख एआई | SaafParakh AI Lab</title>
+    <style>
+        :root {
+            --bg: #090d16;
+            --panel: #131c2e;
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.3);
+            --safe: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body { 
+            background: var(--bg); 
+            color: #f1f5f9; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #090d16 100%);
+        }
+
+        .lab-container { 
+            max-width: 480px; 
+            width: 100%; 
+            background: var(--panel); 
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 25px; 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 40px var(--primary-glow); 
+            text-align: center;
+            position: relative;
+        }
+
+        .brand-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        h1 { font-size: 30px; font-weight: 800; background: linear-gradient(to right, #fff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+        .tagline { color: #64748b; font-size: 13px; margin-bottom: 25px; }
+
+        .scanner-window {
+            background: #090d16;
+            border: 2px dashed rgba(56, 189, 248, 0.4);
+            border-radius: 20px;
+            padding: 35px 20px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            margin-bottom: 20px;
+        }
+
+        .scanner-window:hover {
+            border-color: var(--primary);
+            box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+
+        .scan-icon { font-size: 55px; display: block; margin-bottom: 12px; filter: drop-shadow(0 0 10px var(--primary-glow)); animation: float 3s ease-in-out infinite; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .upload-hint { font-weight: 600; color: #cbd5e1; font-size: 15px; }
+        .upload-sub-hint { font-size: 12px; color: #475569; margin-top: 5px; }
+
+        #previewContainer { display: none; position: relative; width: 100%; max-height: 250px; border-radius: 14px; overflow: hidden; margin-top: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        #imagePreview { width: 100%; height: auto; display: block; max-height: 250px; object-fit: cover; }
+        
+        .laser-line {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(to right, transparent, #ef4444, transparent);
+            box-shadow: 0 0 12px #ef4444;
+            animation: scanAnimation 2s linear infinite;
+        }
+
+        @keyframes scanAnimation {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        #fileInput { display: none; }
+
+        .btn-scan {
+            background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+            color: white; border: none; padding: 15px; font-size: 16px; font-weight: 700;
+            border-radius: 14px; cursor: pointer; width: 100%; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-scan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6), 0 0 15px var(--primary-glow);
+        }
+
+        .loading-zone {
+            display: none; margin: 25px 0;
+        }
+        .spinner {
+            width: 45px; height: 45px; border: 4px solid rgba(56, 189, 248, 0.1); border-top-color: var(--primary);
+            border-radius: 50%; margin: 0 auto 15px; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #statusText { font-size: 13px; color: var(--primary); font-weight: 600; letter-spacing: 0.5px; }
+
+        .result-card {
+            display: none; margin-top: 25px; padding: 20px; border-radius: 16px; text-align: left;
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(15, 21, 22, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .verdict-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .verdict-text { font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .report-body { font-size: 14px; line-height: 1.7; color: #cbd5e1; }
+        .report-body br { margin-bottom: 8px; display: block; content: ""; }
+
+        .card-safe { border-left: 4px solid var(--safe); box-shadow: 0 0 20px rgba(16, 185, 129, 0.15); }
+        .card-safe .status-dot { background: var(--safe); box-shadow: 0 0 10px var(--safe); }
+        .card-safe .verdict-text { color: var(--safe); }
+
+        .card-warning { border-left: 4px solid var(--warning); box-shadow: 0 0 20px rgba(245, 158, 11, 0.15); }
+        .card-warning .status-dot { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
+        .card-warning .verdict-text { color: var(--warning); }
+
+        .card-danger { border-left: 4px solid var(--danger); box-shadow: 0 0 20px rgba(239, 68, 68, 0.15); }
+        .card-danger .status-dot { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+        .card-danger .verdict-text { color: var(--danger); }
+    </style>
+</head>
+<body>
+
+<div class="lab-container">
+    <div class="brand-badge">🔬 SAAF PARAKH LABS v2.0</div>
+    <h1>साफ़ परख एआई</h1>
+    <p class="tagline">मिलावट और केमिकल्स पर जनता का डिजिटल पहरा</p>
+
+    <div class="scanner-window" onclick="document.getElementById('fileInput').click()">
+        <div id="uploadUi">
+            <span class="scan-icon">📸</span>
+            <div class="upload-hint">सामान की फोटो खींचें या चुनें</div>
+            <div class="upload-sub-hint">दूध, मावा, मिर्च, मसाले या पैकेट फूड</div>
+        </div>
+        
+        <div id="previewContainer">
+            <img id="imagePreview" alt="Preview">
+            <div class="laser-line" id="laser"></div>
+        </div>
+        
+        <input type="file" id="fileInput" accept="image/*">
+    </div>
+
+    <button class="btn-scan" onclick="startLabAnalysis()">लैब जांच शुरू करें</button>
+
+    <div class="loading-zone" id="loadingZone">
+        <div class="spinner"></div>
+        <div id="statusText">एआई न्यूरॉन्स को एक्टिवेट किया जा रहा है...</div>
+    </div>
+
+    <div class="result-card" id="resultCard">
+        <div class="verdict-header">
+            <span class="status-dot"></span>
+            <span class="verdict-text" id="verdictText">रिपोर्ट तैयार है</span>
+        </div>
+        <div class="report-body" id="reportData"></div>
+    </div>
+</div>
+
+<script>
+    const API_KEY = 'AIzaSyChFWz5S3tPru_zGBWDvDQLcVYskd_wcdU'; 
+
+    const statusMessages = [
+        "🔍 इमेज पिक्सल को स्कैन किया जा रहा है...",
+        "🧪 हानिकारक केमिकल्स और मिलावट की कड़ियां खोजी जा रही हैं...",
+        "📊 अवयवों (Ingredients) के संतुलन की जांच जारी है...",
+        "📜 फ़ूड सेफ़्टी मानकों से मिलान किया जा रहा है..."
+    ];
+
+    function changeStatusText() {
+        let idx = 0;
+        return setInterval(() => {
+            document.getElementById('statusText').innerText = statusMessages[idx % statusMessages.length];
+            idx++;
+        }, 1500);
+    }
+
+    async function startLabAnalysis() {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length === 0) {
+            alert('कृपया जांच करने के लिए पहले सामान की एक साफ फोटो लें!');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        document.getElementById('loadingZone').style.display = 'block';
+        document.getElementById('resultCard').style.display = 'none';
+        document.getElementById('laser').style.display = 'block';
+
+        const statusInterval = changeStatusText();
+
+        const base64Data = await toBase64(file);
+        const base64Content = base64Data.split(',')[1];
+        const mimeType = file.type;
+
+        const promptText = "तुम भारत के नंबर 1 सीनियर फूड सेफ्टी लैब एक्सपर्ट और साइंटिस्ट हो। इस खाद्य पदार्थ की फोटो का लैब test करो। यदि यह पैकेज्ड फूड है तो पीछे की सामग्री (Ingredients) और न्यूट्रिशन破解 फैक्ट्स की बारीकी से जांच करो। यदि खुला खाद्य (जैसे दूध, पनीर) है तो दृश्य अशुद्धियों को परखो। अपना परिणाम केवल हिंदी में दो। जवाब की शुरुआत में अनिवार्य रूप से इन तीन में से केवल एक कोड शब्द का प्रयोग करो: [SAFE], [WARNING] या [DANGER]। इसके बाद उपभोक्ता के स्वास्थ्य के लिए 3 स्पष्ट बुलेट पॉइंट्स में तीखा और ईमानदारी भरा सच लिखो।";
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: promptText },
+                            { inlineData: { mimeType: mimeType, data: base64Content } }
+                        ]
+                    }]
+                })
+            });
+            
+            const data = await response.json();
+            const aiResult = data.candidates[0].content.parts[0].text;
+            renderLabReport(aiResult);
+        } catch (error) {
+            alert('सर्वर कनेक्ट नहीं हो पाया। अपनी Google API Key की जांच करें!');
+            console.error(error);
+        } finally {
+            clearInterval(statusInterval);
+            document.getElementById('loadingZone').style.display = 'none';
+            document.getElementById('laser').style.display = 'none';
+        }
+    }
+
+    function renderLabReport(text) {
+        const card = document.getElementById('resultCard');
+        const verdictText = document.getElementById('verdictText');
+        const reportData = document.getElementById('reportData');
+
+        card.className = 'result-card';
+        
+        if (text.includes('DANGER') || text.includes('खतरनाक')) {
+            card.classList.add('card-danger');
+            verdictText.innerText = '🚨 खतरनाक: उपयोग न करें!';
+        } else if (text.includes('WARNING') || text.includes('सावधान')) {
+            card.classList.add('card-warning');
+            verdictText.innerText = '⚠️ सावधान: मिलावट की आशंका!';
+        } else {
+            card.classList.add('card-safe');
+            verdictText.innerText = '✅ लैब स्वीकृत: यह सुरक्षित है';
+        }
+
+        let cleanText = text.replace(/\[SAFE\]|\[WARNING\]|\[DANGER\]|SAFE|WARNING|DANGER/g, '').trim();
+        reportData.innerHTML = cleanText.replace(/\n/g, '<br>');
+        card.style.display = 'block';
+    }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function() {
+        if(this.files.length > 0) {
+            document.getElementById('uploadUi').style.display = 'none';
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            
+            previewContainer.style.display = 'block';
+            imagePreview.src = URL.createObjectURL(this.files[0]);
+        }
+    });
+</script>
+</body>
+</html>
